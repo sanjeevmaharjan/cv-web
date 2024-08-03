@@ -1,3 +1,11 @@
 {
-  "extends": "next/core-web-vitals"
+  "ignorePatterns": ["**/*.ico"],
+  "extends": ["next/core-web-vitals", "google"],
+  "rules": {
+    "indent": ["error", 2],
+    "semi": ["error", "never"],
+    "require-jsdoc": 0,
+    "new-cap": 0,
+    "operator-linebreak": 0
+  }
 }
