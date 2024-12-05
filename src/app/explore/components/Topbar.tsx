@@ -1,13 +1,12 @@
 'use client'
 
+import Logo from '@/app/logo/logo-no-background.svg'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
 import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
-import Logo from '@/app/logo/logo-no-background.svg'
 // import { useState } from 'react'
 
 const logoStyle = {

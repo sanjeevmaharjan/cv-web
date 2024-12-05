@@ -1,13 +1,17 @@
 'use client'
-import theme from './theme'
-import {AppRouterCacheProvider} from '@mui/material-nextjs/v14-appRouter'
-import {ThemeProvider} from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
 
-export default function AppLayout(
-  {inter, children}:
-    { inter: string, children: React.ReactNode }
-) {
+import {AppRouterCacheProvider} from '@mui/material-nextjs/v14-appRouter'
+import CssBaseline from '@mui/material/CssBaseline'
+import {ThemeProvider} from '@mui/material/styles'
+import theme from './theme'
+
+export default function AppLayout({
+  inter,
+  children,
+}: {
+  inter: string
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
       <body className={inter}>

@@ -8,20 +8,28 @@ import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 import Chip from '@mui/material/Chip'
+import IconButton from '@mui/material/IconButton'
+import Dialog from '@mui/material/Dialog'
+import Box from '@mui/material/Box'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import ArrowUpward from '@mui/icons-material/ArrowUpward'
+import ArrowDownward from '@mui/icons-material/ArrowDownward'
+import Preview from '@mui/icons-material/Preview'
 import React, {useDeferredValue} from 'react'
 
 type ResultLineProps = {item: any}
 
 export default function ResultLine({item}: ResultLineProps) {
-  const [open, setOpen] = React.useState(false)
+  const [showMore, setShowMore] = React.useState(false)
+  const [showPreview, setShowPreview] = React.useState(false)
 
-  const handleOpen = () => {
-    setOpen(true)
-  }
+  const handleShowMore = () => setShowMore(true)
+  const handleHideShowMore = () => setShowMore(false)
 
-  const handleClose = () => {
-    setOpen(false)
-  }
+  const handleShowPreview = () => setShowPreview(true)
+  const handleHidePreview = () => setShowPreview(false)
 
   const displayWhenNoMatch = useDeferredValue(
     Array.isArray(item?.resumeText)
@@ -38,12 +46,19 @@ export default function ResultLine({item}: ResultLineProps) {
 
   return (
     <React.Fragment>
-      <ListItem sx={{pb: '1em'}}>
+      <ListItem sx={{pb: '1em'}} disablePadding>
         <ListItemText
-          primary={<React.Fragment>Document Title</React.Fragment>}
+          primary={
+            <React.Fragment>
+              Document Title{' '}
+              <IconButton onClick={handleShowPreview} size="small">
+                <Preview fontSize="small" />
+              </IconButton>
+            </React.Fragment>
+          }
           secondary={
             <React.Fragment>
-              <Typography variant="body2" fontStyle="italic">
+              <Typography component="div" variant="body2" fontStyle="italic">
                 <List>
                   {displayWhenNoMatch}
                   {firstTwo?.map?.((match: any, rIndex: number) => (
@@ -59,14 +74,9 @@ export default function ResultLine({item}: ResultLineProps) {
                       />
                     </ListItem>
                   ))}
-                  {!open && !!remaining?.length && (
-                    <Button variant="text" onClick={handleOpen} size="small">
-                      ... show more
-                    </Button>
-                  )}
 
                   {remaining && (
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={showMore} timeout="auto" unmountOnExit>
                       {remaining?.map?.((match: any, rIndex: number) => (
                         <ListItemText
                           key={rIndex}
@@ -80,10 +90,26 @@ export default function ResultLine({item}: ResultLineProps) {
                         />
                       ))}
 
-                      <Button variant="text" onClick={handleClose} size="small">
+                      <Button
+                        variant="text"
+                        onClick={handleHideShowMore}
+                        size="small"
+                        startIcon={<ArrowUpward />}
+                      >
                         hide
                       </Button>
                     </Collapse>
+                  )}
+
+                  {!showMore && !!remaining?.length && (
+                    <Button
+                      variant="text"
+                      onClick={handleShowMore}
+                      size="small"
+                      startIcon={<ArrowDownward />}
+                    >
+                      Show More
+                    </Button>
                   )}
                 </List>
               </Typography>
@@ -107,6 +133,21 @@ export default function ResultLine({item}: ResultLineProps) {
           }
         />
       </ListItem>
+
+      <Dialog open={showPreview} onClose={handleHidePreview} scroll="body">
+        <DialogTitle>Document Title</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Box
+              component="div"
+              dangerouslySetInnerHTML={{
+                __html: item?.entity?.resumeHtml ?? item?.resumeHtml,
+              }}
+            />
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+
       <Divider variant="fullWidth" component="li" />
     </React.Fragment>
   )
